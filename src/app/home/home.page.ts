@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import Portals from '@ionic/portals';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +9,28 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  viewName='';
+  myvalue='';
+
+
+  constructor() {
+    if(Capacitor.isNativePlatform()){
+      this.loadNativeContext();
+    }
+  }
+
+  loadNativeContext(){
+    Portals.getInitialContext<{name:string; nativevalue:string}>().then(
+        (context=>{
+          this.viewName=context.name;
+          this.myvalue=context.value.nativevalue;
+          }
+        )
+      )
+  }
+
+  functionName(){
+    alert("hi ");
+  }
 
 }
